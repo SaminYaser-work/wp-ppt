@@ -17,3 +17,20 @@
 		height: 100%;
 	}
 }
+
+.ppt-slide-button-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	button {
+		background-color: royalblue;
+		color: white;
+		font-size: 2em;
+		border-radius: 5px;
+		padding: 0.5em 1em;
+		border: none;
+		cursor: pointer;
+		outline: none;
+	}	
+}

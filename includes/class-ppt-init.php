@@ -27,9 +27,11 @@ class Ppt_Init {
         $html .= $content;
         $html .= '</div>';
 
-        $html .= '<button class="btn btn-primary ppt-start-presentation-btn">';
+        $html .= '<div class="ppt-slide-button-container">';
+        $html .= '<button class="ppt-slide-button">';
         $html .= __('Start Presentation', 'presentation');
         $html .= '</button>';
+        $html .= '</div>';
 
         return $html;
     }

@@ -5,7 +5,7 @@
 	"version": "0.1.0",
 	"title": "Slide",
 	"category": "presentation",
-	"icon": "smiley",
+	"icon": "slides",
 	"description": "A Page in Presentation",
 	"example": {},
 	"supports": {

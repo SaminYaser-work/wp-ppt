@@ -17,7 +17,7 @@ function requestFullScreen() {
 }
 
 domReady(() => {
-    $('.ppt-start-presentation-btn').click(function() {
+    $('.ppt-slide-button').click(function() {
         const slides = $('.wp-block-ppt-slide');
 
         if (slides.length === 0) {
@@ -58,6 +58,7 @@ domReady(() => {
         }
 
         function stopPresentation() {
+            currentSlide = -1;
             bgDiv.remove();
             $('#wpadminbar').show();
         }
