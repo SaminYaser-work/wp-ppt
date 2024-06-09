@@ -1,14 +1,23 @@
-import domReady from '@wordpress/dom-ready';
+/** @format */
+
+import domReady from "@wordpress/dom-ready";
+import "./transit";
 
 const $ = jQuery;
 
 function requestFullScreen() {
-    const element = document.querySelector('body');
-    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+    const element = document.querySelector("body");
+    var requestMethod =
+        element.requestFullScreen ||
+        element.webkitRequestFullScreen ||
+        element.mozRequestFullScreen ||
+        element.msRequestFullScreen;
 
-    if (requestMethod) { // Native full screen.
+    if (requestMethod) {
+        // Native full screen.
         requestMethod.call(element);
-    } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+    } else if (typeof window.ActiveXObject !== "undefined") {
+        // Older IE.
         var wscript = new ActiveXObject("WScript.Shell");
         if (wscript !== null) {
             wscript.SendKeys("{F11}");
@@ -17,24 +26,75 @@ function requestFullScreen() {
 }
 
 domReady(() => {
-    $('.ppt-slide-button').click(function() {
-        const slides = $('.wp-block-ppt-slide');
+    $(".ppt-slide-button").click(function () {
+        const slides = $(".wp-block-ppt-slide");
 
         if (slides.length === 0) {
-            alert('No slides found.');
+            alert("No slides found.");
             return;
         }
 
-        const bgDiv = $('<div class="ppt-bg-div"></div>');
-
         let currentSlide = -1;
 
-        $('body').append(bgDiv);
+        function startTransition(elem, direction) {
+            const attributes = JSON.parse(
+                decodeURIComponent(elem.attr("data-attributes"))
+            );
 
-        function replaceContent(elem) {
-            // const slideWrapper = $('<div class="ppt-slide-content"></div>');
-            // slideWrapper.append(elem);
-            bgDiv.html(elem);
+            const oldSlide = $(".ppt-bg-div");
+            const newSlide = $(
+                '<div class="ppt-bg-div" style="display: none;"></div>'
+            );
+            newSlide.html(elem);
+
+            switch (attributes.transition) {
+                case "fade":
+                    if (currentSlide === 0) {
+                        $("body").append(newSlide);
+                        newSlide.fadeIn("slow");
+                    } else {
+                        oldSlide.fadeOut("slow", function () {
+                            $(this).replaceWith(newSlide);
+                            newSlide.fadeIn("fast");
+                        });
+                    }
+                    break;
+                case "slide_in":
+                    newSlide.css({
+                        display: "block",
+                    });
+
+                    newSlide.transition({
+                        x: direction === "forward" ? "100%" : "-100%",
+                    }, {duration: 0});
+
+                    $("body").append(newSlide);
+                    oldSlide.transition(
+                        { x: direction === "forward" ? "-100%" : "100%" },
+                        {
+                            duration: 1000,
+                            ease: "ease",
+                            complete: function () {
+                                $(this).remove();
+                            },
+                        }
+                    );
+                    newSlide.transition(
+                        { x: "0%" },
+                        {
+                            duration: 1000,
+                            ease: "ease",
+                        }
+                    );
+                    break;
+                default:
+                    if (oldSlide.length > 0) {
+                        oldSlide.replaceWith(newSlide);
+                    } else {
+                        $("body").append(newSlide);
+                    }
+                    newSlide.css("display", "block");
+            }
         }
 
         function nextSlide() {
@@ -44,7 +104,7 @@ domReady(() => {
                 currentSlide = 0;
             }
             const slide = slides.eq(currentSlide);
-            replaceContent(slide);
+            startTransition(slide, "forward");
         }
 
         function previousSlide() {
@@ -54,20 +114,22 @@ domReady(() => {
                 currentSlide = slides.length - 1;
             }
             const slide = slides.eq(currentSlide);
-            replaceContent(slide);
+            startTransition(slide, "backward");
         }
 
         function stopPresentation() {
             currentSlide = -1;
-            bgDiv.remove();
-            $('#wpadminbar').show();
+            $(".ppt-bg-div").remove();
+            $(".ppt-bg").remove();
+            $("#wpadminbar").show();
         }
 
         // Start presentation.
+        $('<div class="ppt-bg"></div>').appendTo("body");
         nextSlide();
-        $('#wpadminbar').hide();
+        $("#wpadminbar").hide();
 
-        $(document).on('keydown', function(e) {
+        $(document).on("keydown", function (e) {
             switch (e.keyCode) {
                 case 37:
                     previousSlide();
@@ -83,4 +145,4 @@ domReady(() => {
 
         requestFullScreen();
     });
-})
+});
