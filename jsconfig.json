@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "allowJs": true,
+        "noEmit": true,
+        "checkJs": true,
+        "allowUmdGlobalAccess": true,
+        "strict": false,
+        "resolveJsonModule": true
+    },
+    "exclude": ["node_modules"]
+}

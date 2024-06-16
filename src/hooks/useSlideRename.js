@@ -19,7 +19,7 @@ export default function useSlideRename(clientId) {
                 select("core/block-editor").getBlockAttributes(clientId)
                     ?.metadata,
         };
-    });
+    }, []);
 
     useEffect(() => {
         updateBlockAttributes(clientId, {

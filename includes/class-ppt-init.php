@@ -11,6 +11,10 @@ class Ppt_Init {
 		add_action( 'init', array( $this, 'create_post_type' ) );
 		add_action( 'init', array( $this, 'register_blocks' ) );
 
+		add_action('enqueue_block_assets', function() {
+			wp_enqueue_style('dashicons');
+		});
+
 		if ( version_compare( get_bloginfo( 'version' ), '5.8', '>=' ) ) {
 			add_filter( 'block_categories_all', array( $this, 'register_block_category' ) );
 		} else {

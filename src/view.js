@@ -2,31 +2,12 @@
 
 import domReady from "@wordpress/dom-ready";
 import "./transit";
+import { requestFullScreen } from "./utils";
 
 const $ = jQuery;
 
-function requestFullScreen() {
-    const element = document.querySelector("body");
-    var requestMethod =
-        element.requestFullScreen ||
-        element.webkitRequestFullScreen ||
-        element.mozRequestFullScreen ||
-        element.msRequestFullScreen;
-
-    if (requestMethod) {
-        // Native full screen.
-        requestMethod.call(element);
-    } else if (typeof window.ActiveXObject !== "undefined") {
-        // Older IE.
-        var wscript = new ActiveXObject("WScript.Shell");
-        if (wscript !== null) {
-            wscript.SendKeys("{F11}");
-        }
-    }
-}
-
 domReady(() => {
-    $(".ppt-slide-button").click(function () {
+    $(".ppt-slide-button").on("click", function () {
         const slides = $(".wp-block-ppt-slide");
 
         if (slides.length === 0) {
@@ -64,9 +45,12 @@ domReady(() => {
                         display: "block",
                     });
 
-                    newSlide.transition({
-                        x: direction === "forward" ? "100%" : "-100%",
-                    }, {duration: 0});
+                    newSlide.transition(
+                        {
+                            x: direction === "forward" ? "100%" : "-100%",
+                        },
+                        { duration: 0 }
+                    );
 
                     $("body").append(newSlide);
                     oldSlide.transition(

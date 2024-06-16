@@ -2,7 +2,7 @@
 
 .wp-block-ppt-slide {
     height: fit-content;
-    border: 3px solid royalblue;
+    border: 3px solid hotpink;
     border-radius: 4px;
 
     & > div {
@@ -12,11 +12,27 @@
     }
 }
 
+.ppt-bg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 999;
+	background-color: white;
+	max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .ppt-slide-wrapper {
     position: relative;
     margin-top: 60px;
 
     & > div:first-child {
+        cursor: pointer;
         position: absolute;
         top: 0;
         left: 50%;
@@ -24,8 +40,41 @@
         padding: 5px 10px;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
-        background-color: royalblue;
+        background-color: hotpink;
         color: white;
         z-index: 3;
+    }
+}
+
+.ppt-controls {
+    background-color: hotpink;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding-block: 5px;
+
+    .dashicons {
+        border-radius: 50%;
+        color: white;
+        padding: 10px;
+        font-size: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            background-color: white;
+            color: hotpink;
+        }
+    }
+}
+
+.ppt-add-new-slide-wrapper {
+    button {
+        background-color: hotpink !important;
+        color: white !important;
     }
 }
