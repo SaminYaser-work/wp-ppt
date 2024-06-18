@@ -8,7 +8,7 @@ const $ = jQuery;
 
 domReady(() => {
     $(".ppt-slide-button").on("click", function () {
-        const slides = $(".wp-block-ppt-slide");
+        const slides = $(".wp-block-ppt-slide").clone();
 
         if (slides.length === 0) {
             alert("No slides found.");
@@ -104,16 +104,17 @@ domReady(() => {
         function stopPresentation() {
             currentSlide = -1;
             $(".ppt-bg-div").remove();
-            $(".ppt-bg").remove();
             $("#wpadminbar").show();
+            $(document).off('keydown', handleKeyPress);
         }
 
-        // Start presentation.
-        $('<div class="ppt-bg"></div>').appendTo("body");
-        nextSlide();
-        $("#wpadminbar").hide();
+        function startPresentation() {
+            $('<div class="ppt-bg-div"></div>').appendTo("body");
+            nextSlide();
+            $("#wpadminbar").hide();
+        }
 
-        $(document).on("keydown", function (e) {
+        function handleKeyPress(e) {
             switch (e.keyCode) {
                 case 37:
                     previousSlide();
@@ -125,8 +126,11 @@ domReady(() => {
                     stopPresentation();
                     break;
             }
-        });
+        }
 
+        $(document).on("keydown", handleKeyPress);
+
+        startPresentation();
         requestFullScreen();
     });
 });

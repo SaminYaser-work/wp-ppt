@@ -12,7 +12,7 @@
     }
 }
 
-.ppt-bg {
+.ppt-bg-editor {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -20,11 +20,13 @@
 	bottom: 0;
 	width: 100vw;
 	height: 100vh;
-	z-index: 999;
+	z-index: 29;
 	background-color: white;
-	max-height: 100vh;
-    display: flex;
-    flex-direction: column;
+}
+
+.components-popover {
+    overlay: auto !important;
+    z-index: 999 !important;
 }
 
 .ppt-slide-wrapper {

@@ -103,7 +103,7 @@ export default function Edit({ clientId, attributes, setAttributes }) {
                     {attributes?.metadata?.name ?? __("Slide", "presentation")}
                 </div>
                 {isFullscreen ? (
-                    <div className="ppt-bg" ref={ref}>
+                    <div className="ppt-bg-editor" ref={ref}>
                         <Content blockProps={blockProps} />
                     </div>
                 ) : (
